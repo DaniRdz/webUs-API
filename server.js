@@ -3,6 +3,7 @@ const logger = require("morgan");
 const bodyParser = require("body-parser");
 
 const users = require("./routes/users");
+const products = require("./routes/product");
 const mongoose = require("./config/database");
 
 var jwt = require("jsonwebtoken");
@@ -25,6 +26,8 @@ app.get("/", (req, res) => {
 });
 
 app.use("/users", users);
+
+app.use("/products", products);
 
 app.listen(PORT, () => {
   console.log("Server is listennig on PORT:", PORT);

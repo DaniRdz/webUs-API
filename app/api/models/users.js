@@ -3,12 +3,14 @@ const bcrypt = require("bcrypt");
 
 const saltRounds = 10;
 
-const Schema  = mongoose.Schema;
+const Schema = mongoose.Schema;
 
 const UserSchema = new Schema({
   name: String,
   email: String,
+  //address: String,
   password: String,
+  //cartProducts: [],
 });
 
 UserSchema.pre("save", function (next) {

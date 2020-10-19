@@ -18,6 +18,7 @@ mongoose.connection.on(
   console.error.bind(console, "Error de conexion en MongoDB")
 );
 
+app.use(express.json());
 app.use(logger("dev"));
 app.use(bodyParser.urlencoded({ extended: false }));
 
@@ -27,7 +28,22 @@ app.get("/", (req, res) => {
 
 app.use("/users", users);
 
-app.use("/products", products);
+app.use("/products", validateUser, products);
+
+function validateUser(req, res, next) {
+  jwt.verify(
+    req.headers["x-access-token"],
+    req.app.get("secretKey"),
+    (err, decoded) => {
+      if (err) {
+        res.json({ mesagge: "User Invalid" });
+      } else {
+        req.body.userId = decoded.id;
+        next();
+      }
+    }
+  );
+}
 
 app.listen(PORT, () => {
   console.log("Server is listennig on PORT:", PORT);

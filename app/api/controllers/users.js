@@ -2,26 +2,22 @@ const userModel = require("../models/users");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 
+const config = require("../../../config/config");
+
 module.exports = {
   create: function (req, res, next) {
-    userModel.create(
-      {
-        name: req.body.name,
-        email: req.body.email,
-        password: req.body.password,
-      },
-      function (err, result) {
-        if (err) {
-          next(err);
-        } else {
-          res.json({
-            status: "ok",
-            message: "user created successfully!!",
-            data: null,
-          });
-        }
+    const { name, email, password } = req.body;
+    userModel.create({ name, email, password }, function (err, result) {
+      if (err) {
+        next(err);
+      } else {
+        res.json({
+          status: "ok",
+          message: "user created successfully!!",
+          data: null,
+        });
       }
-    );
+    });
   },
   authenticate: function (req, res, next) {
     userModel.findOne({ email: req.body.email }, function (err, userInfo) {
@@ -29,11 +25,9 @@ module.exports = {
         next(err);
       } else {
         if (bcrypt.compareSync(req.body.password, userInfo.password)) {
-          const token = jwt.sign(
-            { id: userInfo._id },
-            req.app.get("secretKey"),
-            { expiresIn: "1h" }
-          );
+          const token = jwt.sign({ id: userInfo._id }, config.SECRET, {
+            expiresIn: "1h",
+          });
           res.json({
             status: "ok",
             message: "user has been authenticated!",

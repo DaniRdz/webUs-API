@@ -6,16 +6,12 @@ const users = require("./routes/users");
 const products = require("./routes/product");
 const mongoose = require("./config/database");
 
-var jwt = require("jsonwebtoken");
-
 const app = express();
 const PORT = 3000;
 
-app.set("secretKey", "SecretKey");
-
 mongoose.connection.on(
   "error",
-  console.error.bind(console, "Error de conexion en MongoDB")
+  console.error.bind(console, "Connection error in MongoDB")
 );
 
 app.use(express.json());
@@ -28,22 +24,7 @@ app.get("/", (req, res) => {
 
 app.use("/users", users);
 
-app.use("/products", validateUser, products);
-
-function validateUser(req, res, next) {
-  jwt.verify(
-    req.headers["x-access-token"],
-    req.app.get("secretKey"),
-    (err, decoded) => {
-      if (err) {
-        res.json({ mesagge: "User Invalid" });
-      } else {
-        req.body.userId = decoded.id;
-        next();
-      }
-    }
-  );
-}
+app.use("/products", /* validateUser, */ products);
 
 app.listen(PORT, () => {
   console.log("Server is listennig on PORT:", PORT);

@@ -8,7 +8,8 @@ const Schema = mongoose.Schema;
 const UserSchema = new Schema({
   name: String,
   email: String,
-  //address: String,
+  address: { type: String, default: "" },
+  phone: { type: String, default: "" },
   password: String,
   role: { type: String, default: "user" },
   //cartProducts: [],

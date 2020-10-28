@@ -43,4 +43,22 @@ module.exports = {
       }
     });
   },
+  updateById: (req, res, next) => {
+    const { address, phone } = req.body;
+    userModel.findByIdAndUpdate(
+      req.params.userId,
+      { address, phone },
+      (err, userInfo) => {
+        if (err) {
+          next(err);
+        } else {
+          res.json({
+            status: "success",
+            message: "User Updated",
+            data: null,
+          });
+        }
+      }
+    );
+  },
 };

@@ -2,12 +2,9 @@ const productModel = require("../models/product");
 
 module.exports = {
   create: (req, res, next) => {
+    const { title, description, price, imgURL, belogsTo } = req.body;
     productModel.create(
-      {
-        title: req.body.title,
-        description: req.body.description,
-        price: req.body.price,
-      },
+      { title, description, price, imgURL, belogsTo },
       (err, result) => {
         if (err) {
           next(err);
@@ -46,6 +43,8 @@ module.exports = {
             title: product.title,
             description: product.description,
             price: product.price,
+            imgURL: product.imgURL,
+            belogsTo: product.belogsTo,
           });
         }
 
@@ -58,10 +57,10 @@ module.exports = {
     });
   },
   updateById: (req, res, next) => {
-    const { title, description, price } = req.body;
+    const { title, description, price, imgURL, belogsTo } = req.body;
     productModel.findByIdAndUpdate(
       req.params.productId,
-      { title, description, price },
+      { title, description, price, imgURL, belogsTo },
       (err, productInfo) => {
         if (err) {
           next(err);

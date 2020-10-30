@@ -1,11 +1,12 @@
 const orderModel = require("../models/order");
+const users = require("../models/users");
 
 module.exports = {
   create: (req, res, next) => {
-    const { shippingMethod, orderStatus, orderTime } = req.body;
+    const { shippingMethod, orderStatus, orderTime, user } = req.body;
 
     orderModel.create(
-      { shippingMethod, orderStatus, orderTime },
+      { shippingMethod, orderStatus, orderTime, user },
       (err, result) => {
         if (err) {
           next(err);
@@ -25,20 +26,33 @@ module.exports = {
       if (err) {
         next(err);
       } else {
-        for (let order of orders) {
-          const { _id, shippingMethod, orderStatus, orderTime } = order;
-          ordersList.push({
-            _id,
-            orderStatus,
-            shippingMethod,
-            orderTime,
-          });
-        }
-        res.json({
-          status: "success",
-          message: "Order List",
-          data: { orders: ordersList },
-        });
+        users.populate(
+          orders,
+          { path: "user", select: ["name", "address", "phone"] },
+          (err, orders) => {
+            for (let order of orders) {
+              const {
+                _id,
+                shippingMethod,
+                orderStatus,
+                orderTime,
+                user,
+              } = order;
+              ordersList.push({
+                _id,
+                orderStatus,
+                shippingMethod,
+                orderTime,
+                user,
+              });
+            }
+            res.json({
+              status: "success",
+              message: "Order List",
+              data: { orders: ordersList },
+            });
+          }
+        );
       }
     });
   },

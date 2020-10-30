@@ -38,13 +38,14 @@ module.exports = {
         next(err);
       } else {
         for (let product of products) {
+          const { _id, title, description, price, imgURL, belogsTo } = product;
           productsList.push({
-            id: product._id,
-            title: product.title,
-            description: product.description,
-            price: product.price,
-            imgURL: product.imgURL,
-            belogsTo: product.belogsTo,
+            _id,
+            title,
+            description,
+            price,
+            imgURL,
+            belogsTo,
           });
         }
 

@@ -44,10 +44,10 @@ module.exports = {
     });
   },
   updateById: (req, res, next) => {
-    const { address, phone } = req.body;
+    const { address, phone, cartProducts } = req.body;
     userModel.findByIdAndUpdate(
       req.params.userId,
-      { address, phone },
+      { address, phone, cartProducts },
       (err, userInfo) => {
         if (err) {
           next(err);

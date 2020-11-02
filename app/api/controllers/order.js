@@ -28,7 +28,11 @@ module.exports = {
       } else {
         users.populate(
           orders,
-          { path: "user", select: ["name", "address", "phone"] },
+          {
+            path: "user",
+            select: ["name", "address", "phone", "cartProducts"],
+            populate: { path: "cartProducts" },
+          },
           (err, orders) => {
             for (let order of orders) {
               const {

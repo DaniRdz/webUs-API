@@ -78,4 +78,16 @@ module.exports = {
       }
     );
   },
+  deleteById: (req, res, next) => {
+    orderModel.findByIdAndDelete(req.params.orderId, (err) => {
+      if (err) {
+        next(err);
+      } else {
+        res.json({
+          status: "succes",
+          message: "Order Deleted",
+        });
+      }
+    });
+  },
 };

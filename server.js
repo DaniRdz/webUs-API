@@ -5,6 +5,7 @@ const bodyParser = require("body-parser");
 const users = require("./routes/users");
 const products = require("./routes/product");
 const orders = require("./routes/order");
+const cart = require("./routes/cart");
 const mongoose = require("./config/database");
 
 const app = express();
@@ -26,6 +27,7 @@ app.get("/", (req, res) => {
 app.use("/users", users);
 app.use("/products", products);
 app.use("/orders", orders);
+app.use("/cart", cart);
 
 app.listen(PORT, () => {
   console.log("Server is listennig on PORT:", PORT);

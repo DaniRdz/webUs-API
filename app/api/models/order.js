@@ -1,7 +1,5 @@
 const mongoose = require("mongoose");
 
-const users = mongoose.model("users");
-
 const { Schema } = mongoose;
 
 const orderSchema = new Schema({

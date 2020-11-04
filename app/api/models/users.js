@@ -12,7 +12,7 @@ const UserSchema = new Schema({
   phone: { type: String, default: "" },
   password: String,
   role: { type: String, default: "user" },
-  cartProducts: [{ type: Schema.ObjectId, ref: "products" }],
+  cartProducts: { type: Schema.ObjectId, ref: "carts" },
 });
 
 UserSchema.pre("save", function (next) {

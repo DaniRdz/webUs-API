@@ -1,5 +1,5 @@
 const orderModel = require("../models/order");
-const users = require("../models/users");
+const user = require("../models/users");
 
 module.exports = {
   create: (req, res, next) => {
@@ -26,12 +26,20 @@ module.exports = {
       if (err) {
         next(err);
       } else {
-        users.populate(
+        user.populate(
           orders,
           {
             path: "user",
             select: ["name", "address", "phone", "cartProducts"],
-            populate: { path: "cartProducts" },
+            populate: {
+              path: "cartProducts",
+              model: "cart",
+              populate: {
+                path: "items.productId",
+                model: "products",
+                select: "title price",
+              },
+            },
           },
           (err, orders) => {
             for (let order of orders) {

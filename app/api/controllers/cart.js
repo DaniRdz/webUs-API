@@ -20,4 +20,26 @@ module.exports = {
       });
     });
   },
+  updateCart: (req, res, next) => {
+    const { items } = req.body;
+    products.populate(items, { path: "productId", select: "price" }, () => {
+      let subtotal = 0;
+
+      for (var i = 0; i < items.length; i++) {
+        subtotal += items[i].quantity * items[i].productId.price;
+      }
+
+      cartModel.findByIdAndUpdate(
+        req.params.cartId,
+        { items, subtotal },
+        (err, cartInfo) => {
+          if (err) {
+            next(err);
+          } else {
+            res.json({ status: "succes", message: "cart updated" });
+          }
+        }
+      );
+    });
+  },
 };

@@ -9,7 +9,7 @@ const cart = require("./routes/cart");
 const mongoose = require("./config/database");
 
 const app = express();
-const PORT = 3000;
+const PORT = process.env.PORT || 8080;
 
 mongoose.connection.on(
   "error",

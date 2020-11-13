@@ -26,7 +26,7 @@ module.exports = {
         res.json({
           status: "success",
           message: "product found",
-          data: { product: productInfo },
+          product: productInfo,
         });
       }
     });
@@ -52,7 +52,7 @@ module.exports = {
         res.json({
           status: "success",
           message: "Product List",
-          data: { products: productsList },
+          products: productsList,
         });
       }
     });

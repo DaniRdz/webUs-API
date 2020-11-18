@@ -15,7 +15,11 @@ module.exports = {
         if (err) {
           next(err);
         } else {
-          res.json({ status: "succes", message: "item added" });
+          res.json({
+            status: "succes",
+            message: "item added",
+            cartInfo: result,
+          });
         }
       });
     });

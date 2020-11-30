@@ -1,6 +1,8 @@
 const mongoose = require("mongoose");
 
-const mongoDB = "mongodb://localhost/webUs";
+require("dotenv").config({ path: ".env" });
+
+const mongoDB = process.env.DB_URL;
 
 mongoose
   .connect(mongoDB, {

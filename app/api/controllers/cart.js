@@ -4,11 +4,11 @@ const products = require("../models/product");
 module.exports = {
   addToCart: (req, res, next) => {
     const { items } = req.body;
-    products.populate(items, { path: "productId", select: "price" }, () => {
+    products.populate(items, { path: "product", select: "price" }, () => {
       let subtotal = 0;
 
       for (var i = 0; i < items.length; i++) {
-        subtotal += items[i].quantity * items[i].productId.price;
+        subtotal += items[i].quantity * items[i].product.price;
       }
 
       cartModel.create({ items, subtotal }, (err, result) => {
@@ -26,11 +26,11 @@ module.exports = {
   },
   updateCart: (req, res, next) => {
     const { items } = req.body;
-    products.populate(items, { path: "productId", select: "price" }, () => {
+    products.populate(items, { path: "product", select: "price" }, () => {
       let subtotal = 0;
 
       for (var i = 0; i < items.length; i++) {
-        subtotal += items[i].quantity * items[i].productId.price;
+        subtotal += items[i].quantity * items[i].product.price;
       }
 
       cartModel.findByIdAndUpdate(

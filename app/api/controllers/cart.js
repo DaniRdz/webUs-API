@@ -18,7 +18,7 @@ module.exports = {
           res.json({
             status: "succes",
             message: "item added",
-            cartInfo: result,
+            cartId: result._id,
           });
         }
       });

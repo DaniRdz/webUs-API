@@ -6,18 +6,21 @@ const config = require("../../../config/config");
 
 module.exports = {
   create: function (req, res, next) {
-    const { name, email, password } = req.body;
-    userModel.create({ name, email, password }, function (err, result) {
-      if (err) {
-        next(err);
-      } else {
-        res.json({
-          status: "ok",
-          message: "user created successfully!!",
-          data: null,
-        });
+    const { name, email, password, address, phone, cartProducts } = req.body;
+    userModel.create(
+      { name, email, password, address, phone, cartProducts },
+      function (err, result) {
+        if (err) {
+          next(err);
+        } else {
+          res.json({
+            status: "ok",
+            message: "user created successfully!!",
+            data: null,
+          });
+        }
       }
-    });
+    );
   },
   authenticate: function (req, res, next) {
     userModel.findOne({ email: req.body.email }, function (err, userInfo) {

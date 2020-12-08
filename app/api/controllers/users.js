@@ -16,7 +16,7 @@ module.exports = {
           res.json({
             status: "ok",
             message: "user created successfully!!",
-            data: null,
+            userInfo: result,
           });
         }
       }

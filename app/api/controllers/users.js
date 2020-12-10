@@ -37,7 +37,8 @@ module.exports = {
             res.json({
               status: "ok",
               message: "user has been authenticated!",
-              data: { user: userInfo, token: token },
+              user: userInfo,
+              token,
             });
           } else {
             res.json({ status: "error", message: "Invalid email/password!!" });

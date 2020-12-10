@@ -59,7 +59,7 @@ module.exports = {
           res.json({
             status: "success",
             message: "User Updated",
-            data: null,
+            user: { address, phone },
           });
         }
       }

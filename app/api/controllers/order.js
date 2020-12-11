@@ -1,22 +1,35 @@
 const orderModel = require("../models/order");
-const user = require("../models/users");
+const users = require("../models/users");
+const carts = require("../models/cart");
 
 module.exports = {
   create: (req, res, next) => {
     const { shippingMethod, orderStatus, orderTime, user } = req.body;
 
-    orderModel.create(
-      { shippingMethod, orderStatus, orderTime, user },
-      (err, result) => {
-        if (err) {
-          next(err);
-        } else {
-          res.json({
-            status: "seccess",
-            message: "order Added Succesfully!!!",
-            data: null,
-          });
-        }
+    users.populate(
+      user,
+      { path: "_id", select: "_id name phone address cartProducts" },
+      () => {
+        const { _id, name, phone, address, cartProducts } = user._id;
+        orderModel.create(
+          {
+            shippingMethod,
+            orderStatus,
+            orderTime,
+            user: { _id, name, phone, address, cartProducts },
+          },
+          (err, result) => {
+            if (err) {
+              next(err);
+            } else {
+              res.json({
+                status: "seccess",
+                message: "order Added Succesfully!!!",
+                data: null,
+              });
+            }
+          }
+        );
       }
     );
   },
@@ -26,19 +39,15 @@ module.exports = {
       if (err) {
         next(err);
       } else {
-        user.populate(
+        carts.populate(
           orders,
           {
-            path: "user",
-            select: ["name", "address", "phone", "cartProducts"],
+            path: "user.cartProducts",
+            select: "items subtotal",
             populate: {
-              path: "cartProducts",
-              model: "cart",
-              populate: {
-                path: "items.productId",
-                model: "products",
-                select: "title price",
-              },
+              path: "items.product",
+              model: "products",
+              select: "title price",
             },
           },
           (err, orders) => {
@@ -61,7 +70,7 @@ module.exports = {
             res.json({
               status: "success",
               message: "Order List",
-              data: { orders: ordersList },
+              orders: ordersList,
             });
           }
         );

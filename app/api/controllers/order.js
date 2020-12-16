@@ -59,7 +59,7 @@ module.exports = {
                 orderTime,
                 user,
               } = order;
-              ordersList.push({
+              ordersList.unshift({
                 _id,
                 orderStatus,
                 shippingMethod,
